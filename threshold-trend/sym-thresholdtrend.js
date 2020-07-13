@@ -60,6 +60,7 @@ Warning:
         scope.canvas2 = document.getElementById("myCanvas");
 
         scope.ctx = scope.canvas.getContext("2d");
+        scope.redrawit;
         // TODO work on fixing the width and heigh
         scope.ctx.canvas.width = 200;//elem.innerWidth;
         scope.ctx.canvas.height = 200; //elem.innerHeight;
@@ -99,8 +100,8 @@ Warning:
             scope.ctx.stroke();
         }
 
-        function drawCurve(rawstr) {
-            var points = PIVisionToPoints(rawstr);
+        function drawCurve() {
+            var points = PIVisionToPoints(scope.lastestData);
 
             var k = 0;
             for (var i = 0; i < points.length - 1; i++) {
@@ -170,28 +171,19 @@ Warning:
                     scope.thresholds.push(100);
                 }
             }
-
+            
             scope.thresholds.sort(function(a,b) { return a - b;});
 
             // Update the threshold
             // TODO: Figure out the threshold 
+            scope.lastestData = newData.Traces[0].LineSegments[0];
 
-            drawCurve(newData.Traces[0].LineSegments[0]);
+            drawCurve();
             //console.log(newData);
             // Set labels if provided in update data
             // Metadata fields are returned on the first request and only periodically afterward
             if (newData.Label !== undefined) {
 
-            }
-
-            // TODO: Update the threshold base on traces other than 0.
-            if (newData.ValueScalePositions) {
-                // Loop over each limits and assigns
-                //Display|Month|[@Trait=Lo]
-                // TODO update the threshold base the updated limit values
-                // TODO draw the new thresholds if needed
-                //scope.thresholds = newData.ValueScalePositions;
-                //console.log(newData.ValueScalePositions);
             }
         }
 
@@ -218,19 +210,10 @@ Warning:
             scope.ctx.canvas.height = height;
 
             scope.ctx.translate(0, scope.canvas.height);
-            var scale = 2;
             scope.ctx.scale(width*0.01, -1 * height*0.01);
     
-            //var canvas = $('#myCanvas');
-            //canvas.height = height;
-            //canvas.width = width;
-            /*
-            var canvas = $('#canvas');
-            canvas.css("width", width);
-            canvas.css("height", height);
-            scope.ctx.canvas.width = width;
-            scope.ctx.canvas.height = height; //elem.innerHeight;
-            */
+            clearTimeout(scope.redrawit);
+            scope.redrawit = setTimeout(drawCurve, 100);
         }
     };
 
