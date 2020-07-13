@@ -112,7 +112,12 @@ Warning:
                     if (inter > 0) {
                         //it will loop over this point again    
                     } else if (inter < 0) {
-                        drawLineSegment(points[i], points[i + 1], scope.colors[j-1]);
+                        if (j == 0) {
+                            drawLineSegment(points[i], points[i + 1], scope.colors[0]);
+                        }
+                        else {
+                            drawLineSegment(points[i], points[i + 1], scope.colors[j-1]);
+                        }
                         break;
                     } else {
                         points.splice(i, 1, origin, inter);
@@ -200,7 +205,7 @@ Warning:
                 scope.symbol.Configuration.Multistates[0].States.forEach(state => scope.colors.push(state.StateValues[0]));
                 // Need to deal if a color is above the largest threshold
                 if (scope.colors.length < scope.thresholds.length) {
-                    scope.colors.push("pink");
+                    scope.colors.push(scope.colors[scope.colors.length - 1]);
                 }
             }   
             //scope.symbol.Configuration.Multistates[0].States[0].StateValues[0]
