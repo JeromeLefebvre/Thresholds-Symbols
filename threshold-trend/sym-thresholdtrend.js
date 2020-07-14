@@ -5,6 +5,10 @@ Warning:
 * The symbol only works if the data are floats or ints, not string data or digital sets, nor does it handle shutdowns/no data type of values
 * If the values are above the latest Max the values shows up as pink, if they are below the current min, the show up as black
 * if no data is shown, moving back and forth on the timeline can help things.
+
+TODO:
+* Remove the various console.log method
+
 */
 
 (function (PV) {
@@ -92,7 +96,7 @@ Warning:
 
         scope.globalThresholds  = {0:[100]};
 
-        function drawLineSegment(origin, end, color = "purple", lineDash = [], lineWidth = 0.3) {
+        function drawLineSegment(origin, end, color = "purple", lineDash = [], lineWidth = 0.2) {
             // draws a line
             scope.ctx.beginPath();
             scope.ctx.setLineDash(lineDash);
@@ -206,6 +210,9 @@ Warning:
             }
             for (var key in scope.globalThresholds) {
                 scope.globalThresholds[key].sort(function(a,b) { return a - b;});
+                if (scope.globalThresholds[key][scope.globalThresholds[key].length-1] != 100) {
+                    scope.globalThresholds[key].push(100);
+                }
             }
             scope.thresholds.sort(function(a,b) { return a - b;});
 
@@ -232,7 +239,7 @@ Warning:
                 scope.symbol.Configuration.Multistates[0].States.forEach(state => scope.colors.push(state.StateValues[0]));
                 // Need to deal if a color is above the largest threshold
                 if (scope.colors.length < scope.thresholds.length) {
-                    scope.colors.push(scope.colors[scope.colors.length - 1]);
+                    scope.colors.push(newConfig.Multistates[0].ErrorStateValues[0]);
                 }
             }   
             //scope.symbol.Configuration.Multistates[0].States[0].StateValues[0]
