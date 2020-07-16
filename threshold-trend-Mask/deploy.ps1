@@ -19,7 +19,7 @@ if (-Not (Test-Path $symbolFolder)) {
     exit
 }
 
-$files = @("sym-thresholdtrend-config.html", "sym-thresholdtrend.css", "sym-thresholdtrend-template.html", "sym-thresholdtrend.js")
+$files = @("sym-thresholdtrend-template.html", "sym-thresholdtrend.js")
 
 foreach ($file in $files) {
     $source = $PSScriptRoot + "\" + $file

@@ -43,6 +43,7 @@ Warning:
         this.onResize = onResize;
         this.onConfigChange = onConfigChange;
 
+        /*
         function drawColors() {
             // TODO: Use save/restore instead of storing into a variable
             var previousComp = scope.ctx.globalCompositeOperation;
@@ -64,7 +65,71 @@ Warning:
                 }
             }
             scope.ctx.globalCompositeOperation = previousComp;
+        }*/
+
+        function drawColors() {
+            // TODO: Use save/restore instead of storing into a variable
+            var previousComp = scope.ctx.globalCompositeOperation;
+            
+            scope.ctx.globalCompositeOperation = "source-atop";
+
+            scope.ctx.fillStyle = scope.errorColor;
+            scope.ctx.fillRect(0, 0, scope.ctx.canvas.width*scope.fudgeWidth, scope.ctx.canvas.height*scope.fudgeHeight);
+            var globaltresholdsraw = scope.latestData.Traces.slice(1, scope.latestData.Traces.length);
+            var globaltresholds = globaltresholdsraw.map(thresholds => thresholds.LineSegments[0].split(" ").map(word => word.split(',')));
+
+            var xes = [];
+            for (var i = 0; i < globaltresholds.length; i++) {
+                for (var j = 0; j < globaltresholds[i].length; j++) {
+                    var x = globaltresholds[i][j][0];
+                    if (!xes.includes(x)) {
+                        xes.push(x);
+                        if (x != 0 && x != 100) {
+                            xes.push(x);
+                        }
+                    }
+                }
+            }
+            xes.sort((a,b) => parseFloat(a) - parseFloat(b));
+
+            var newglobaltresholds = [];
+            for (var i = 0; i < globaltresholds.length; i++) {
+                var newThreshold = [];
+                var k = 0; 
+                var thresholds = globaltresholds[i];
+
+                for (var j = 0; j < xes.length; j++) {
+                    if ( xes[j] ==  thresholds[k][0]) {
+                        newThreshold.push([xes[j], thresholds[k][1]]);
+                        k++;
+                        // if it is a transition step, add the transition as well
+                        /*
+                        if (k <thresholds.lenght && thresholds[k][0] == thresholds[k+1][0]) {
+                            newThreshold.push([xes[j], thresholds[k+1][1]]);
+                            k++;
+                        }
+                        */
+                    }
+                    else {
+                        newThreshold.push([xes[j], thresholds[k][1]]);
+                    }
+                }
+                newglobaltresholds.push(newThreshold);
+            }
+            globaltresholds = newglobaltresholds;
+            for (var globalIndex = 1; globalIndex < globaltresholds.length; globalIndex++) {
+                scope.ctx.fillStyle = scope.colors[globalIndex-1];
+                for (var pointIndex = 0; pointIndex < globaltresholds[globalIndex].length - 1; pointIndex++) {
+                    var x = globaltresholds[globalIndex - 1][pointIndex][0];
+                    var y = globaltresholds[globalIndex - 1][pointIndex][1];
+                    var width = globaltresholds[globalIndex][pointIndex + 1][0] - globaltresholds[globalIndex][pointIndex][0];
+                    var height = globaltresholds[globalIndex][pointIndex][1] - globaltresholds[globalIndex-1][pointIndex][1];
+                    scope.ctx.fillRect(x, y, width*scope.fudgeWidth, height*scope.fudgeHeight);
+                }
+            }
+            scope.ctx.globalCompositeOperation = previousComp;
         }
+
 
         function drawCurve() {
             // TODO: Deal with bad data by looping over multiple linesegements
