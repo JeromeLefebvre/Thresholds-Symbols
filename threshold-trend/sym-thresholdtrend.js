@@ -216,17 +216,9 @@ TODO:
             }
             scope.thresholds.sort(function(a,b) { return a - b;});
 
-            // Update the threshold
-            // TODO: Figure out the threshold 
             scope.latestData = newData.Traces[0].LineSegments;
 
             drawCurve();
-            //console.log(newData);
-            // Set labels if provided in update data
-            // Metadata fields are returned on the first request and only periodically afterward
-            if (newData.Label !== undefined) {
-
-            }
         }
 
        // Process configuration changes 
