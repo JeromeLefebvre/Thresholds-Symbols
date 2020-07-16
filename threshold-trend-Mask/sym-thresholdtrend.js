@@ -43,29 +43,6 @@ Warning:
         this.onResize = onResize;
         this.onConfigChange = onConfigChange;
 
-        /*
-        function drawColors() {
-            // TODO: Use save/restore instead of storing into a variable
-            var previousComp = scope.ctx.globalCompositeOperation;
-            
-            scope.ctx.globalCompositeOperation = "source-atop";
-
-            scope.ctx.fillStyle = scope.errorColor;
-            scope.ctx.fillRect(0, 0, scope.ctx.canvas.width*scope.fudgeWidth, scope.ctx.canvas.height*scope.fudgeHeight);
-            var globaltresholdsraw = scope.latestData.Traces.slice(1, scope.latestData.Traces.length);
-            var globaltresholds = globaltresholdsraw.map(thresholds => thresholds.LineSegments[0].split(" ").map(word => word.split(',')));
-            for (var globalIndex = 1; globalIndex < globaltresholds.length; globalIndex++) {
-                scope.ctx.fillStyle = scope.colors[globalIndex-1];
-                for (var pointIndex = 0; pointIndex < globaltresholds[globalIndex].length - 1; pointIndex++) {
-                    var x = globaltresholds[globalIndex - 1][pointIndex][0];
-                    var y = globaltresholds[globalIndex - 1][pointIndex][1];
-                    var width = globaltresholds[globalIndex][pointIndex + 1][0] - globaltresholds[globalIndex][pointIndex][0];
-                    var height = globaltresholds[globalIndex][pointIndex][1] - globaltresholds[globalIndex-1][pointIndex][1];
-                    scope.ctx.fillRect(x, y, width*scope.fudgeWidth, height*scope.fudgeHeight);
-                }
-            }
-            scope.ctx.globalCompositeOperation = previousComp;
-        }*/
 
         function drawColors() {
             // TODO: Use save/restore instead of storing into a variable
@@ -102,13 +79,6 @@ Warning:
                     if ( xes[j] ==  thresholds[k][0]) {
                         newThreshold.push([xes[j], thresholds[k][1]]);
                         k++;
-                        // if it is a transition step, add the transition as well
-                        /*
-                        if (k <thresholds.lenght && thresholds[k][0] == thresholds[k+1][0]) {
-                            newThreshold.push([xes[j], thresholds[k+1][1]]);
-                            k++;
-                        }
-                        */
                     }
                     else {
                         newThreshold.push([xes[j], thresholds[k][1]]);
@@ -136,7 +106,7 @@ Warning:
             var points = scope.latestData.Traces[0].LineSegments[0].split(" ").map(p => p.split(','));
             scope.ctx.setLineDash([]);
             scope.ctx.strokeStyle = "white";
-            scope.ctx.lineWidth = 0.2;            
+            scope.ctx.lineWidth = 0.5;            
             scope.ctx.beginPath();
             for (var i = 0; i < points.length - 1; i++) {
                 scope.ctx.moveTo(points[i][0], points[i][1]);
