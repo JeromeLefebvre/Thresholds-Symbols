@@ -19,27 +19,34 @@ if (-Not (Test-Path $symbolFolder)) {
     exit
 }
 
-$files = @("sym-thresholdtrend-template.html", "sym-thresholdtrend.js")
-
+$files = @("sym-thresholdlabel-template.html", "sym-thresholdlabel.js")
 foreach ($file in $files) {
     $source = $PSScriptRoot + "\" + $file
     $target = $symbolFolder
     Copy-Item $source $target
 }
-$icons = @("sym-thresholdtrend.png")
+
+$icons = @("sym-thresholdlabel.png")
 foreach ($icon in $icons) {
     $source = $PSScriptRoot + "\" + $icon
     $target = $symbolFolder + "\icons"
     Copy-Item $source $target
 }
 
-Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20107/garbage
-$wshell = New-Object -ComObject wscript.shell;
+<#
+$urls = @("https://localhost/PIVision/#/Displays/AdHoc?dataitems=%5C%5CJLEFEBVRE7390%5CVisy%5CRoll1%7CActual%20GSM&symbol=thresholdtrend", 
+           "https://localhost/PIVision/#/Displays/20107/garbage")
+foreach ($url in $urls) {
+    start microsoft-edge:$url
+}#>
 Start-Sleep 1
+Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20108/Various-Multistates
+$wshell = New-Object -ComObject wscript.shell;
+Start-Sleep 2
 $wshell.SendKeys('{F12}')
-Start-Sleep  2
+Start-Sleep 2
 $wshell.SendKeys('^p')
-Start-Sleep  1
-$wshell.SendKeys('localhost/PIVision/Scripts/app/editor/symbols/ext/sym-thresholdtrend.js')
-Start-Sleep  2
+Start-Sleep 3
+$wshell.SendKeys('localhost/PIVision/Scripts/app/editor/symbols/ext/sym-thresholdlabel.js')
+Start-Sleep 3
 $wshell.SendKeys('{ENTER}')
