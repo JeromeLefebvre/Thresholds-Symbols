@@ -17,6 +17,7 @@
         },
         StateVariables: ['MultistateColor']
     };
+    
     symbolVis.prototype.init = function (scope, elem) {
         scope.canvas = elem.find(".thresholdtrend")[0];
         scope.ctx = scope.canvas.getContext("2d");
@@ -39,14 +40,13 @@
                 globaltresholds[globalIndex - 1].forEach(point => scope.ctx.lineTo(point[0], point[1]));
                 globaltresholds[globalIndex].slice().reverse().forEach(point => scope.ctx.lineTo(point[0], point[1]));
                 scope.ctx.closePath();
-                scope.ctx.fillStyle = scope.colors[globalIndex];                
+                scope.ctx.fillStyle = scope.colors[globalIndex-2];                
                 scope.ctx.fill();
               }
               scope.ctx.restore();
         }
 
         function drawCurve() {
-            // TODO: Deal with bad data by looping over multiple linesegements
             var points = scope.latestData.Traces[0].LineSegments[0].split(" ").map(p => p.split(','));
             scope.ctx.strokeStyle = "white";
             scope.ctx.lineWidth = 0.1;            
@@ -93,7 +93,7 @@
             // debouce
             clearTimeout(scope.redrawit);
             if (scope.latestData)
-                scope.redrawit = setTimeout(draw, 100);
+                scope.redrawit = setTimeout(draw, 50);
         }
     };  
 	PV.symbolCatalog.register(definition); 
