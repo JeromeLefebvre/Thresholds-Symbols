@@ -35,7 +35,7 @@ foreach ($icon in $icons) {
 
 Start-Process microsoft-edge:https://localhost/pivision/#/Displays/20113/Compare-to-trend
 $wshell = New-Object -ComObject wscript.shell;
-Start-Sleep 1
+Start-Sleep 2
 $wshell.SendKeys('{F12}')
 Start-Sleep  2
 $wshell.SendKeys('^p')

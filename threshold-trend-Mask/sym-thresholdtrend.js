@@ -84,11 +84,17 @@
             }   
         }
 
-        function onResize(width, height) {            
-            scope.canvas.width = width;
-            scope.canvas.height = height;
+        function onResize(width, height) {     
+            const scale = 0.01;
+            const pixelRatio = window.devicePixelRatio || 1;       
+            scope.canvas.width = width*pixelRatio;
+            scope.canvas.height = height*pixelRatio;
+
+            scope.canvas.style.width = `${width}px`;
+            scope.canvas.style.height = `${height}px`;
+
             scope.ctx.translate(0, scope.canvas.height);
-            scope.ctx.scale(width*0.01, -1*height*0.01);
+            scope.ctx.scale(width*0.01*pixelRatio, -1*height*0.01*pixelRatio);
 
             // debouce
             clearTimeout(scope.redrawit);
