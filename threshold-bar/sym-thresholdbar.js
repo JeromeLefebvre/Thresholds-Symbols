@@ -40,18 +40,28 @@
             if (!newData) {
                 return;
             }
-
-            if (scope.IsDynamicLimit) {
-                var points = scope.latestData.Traces[0].LineSegments[0].split(" ").map(p => p.split(','));
-                for (var i = 0; i < points.length - 1; i++) {
-                    var x = points[i][0];
-                    var y = 0;
-                    var width = (points[i+1][0] - points[i][0])*scope.fudgeWidth;
-                    var height = scope.height*scope.fudgeHeight;
-                    scope.ctx.fillStyle = scope.colors[points[i][1]];
-                    scope.ctx.fillRect(x, y, width, height);
+            // newData.ValueScaleLabels, phase1
+            // newData.ValueScalePositions 0, 17.7
+            scope.ctx.fillStyle = "white";
+            var points = newData.Traces[0].LineSegments[0].split(" ").map(p => p.split(','));
+            for (var i = 0; i < points.length - 1; i++) {
+                var x = points[i][0];
+                var y = points[i][1];
+                var width = (points[i+1][0] - points[i][0]);
+                var height = 100;
+                if (scope.IsDynamicLimit) {
+                    
+                    scope.ctx.fillStyle = scope.colors[newData.ValueScalePositions.indexOf(points[i][1])];
                 }
+                if (scope.IsDigitalSet) {
+                    // Translate between position and state
+                    var state = newData.ValueScaleLabels[newData.ValueScalePositions.indexOf(parseFloat(y))];
+                    scope.ctx.fillStyle = scope.colors[state];
+                }
+                
+                scope.ctx.fillRect(x, 0, width, height);
             }
+            
             /*
             if (newData.Limits) {
                 for (var i = 2; i < newData.Limits.length; i++) {
@@ -71,18 +81,23 @@
             if (!scope.symbol.Configuration.Multistates) {
                 return;
             }
-            if (newConfig.Multistates[0].IsDynamicLimit) {
-                scope.IsDynamicLimit = true;
+            scope.IsDynamicLimit = newConfig.Multistates[0].IsDynamicLimit;
+            scope.IsDigitalSet = newConfig.Multistates[0].IsDigitalSet;
+
+            if (scope.IsDynamicLimit) {
                 scope.colors = [];
                 scope.symbol.Configuration.Multistates[0].States.forEach(state => scope.colors.push( {color: state.StateValues[0] })  );
                 scope.errorColor = newConfig.Multistates[0].ErrorStateValues[0];
             }
-            if (newConfig.Multistates[0].IsDigitalSet) {
+            else if (scope.IsDigitalSet) {
                 scope.colors = {};
                 for (var i = 0; i < newConfig.Multistates[0].States.length; i++) {
                     scope.colors[newConfig.Multistates[0].States[i].Name] = newConfig.Multistates[0].States[i].StateValues[0];
                     //scope.colors.push({color :  newConfig.Multistates[0].States[i].StateValues[0], text: newConfig.Multistates[0].States[i].Name});
                 }
+            }
+            else {
+                // bounds are manually set
             }
         }
 
@@ -90,9 +105,6 @@
         function onResize(width, height) {
             scope.height = height;
             scope.width = width;
-
-            scope.fudgeHeight = Math.max(1, 1/(height*0.01));
-            scope.fudgeWidth = Math.max(1, 1/(width*0.01));
             scope.ctx.canvas.width = width;
             scope.ctx.canvas.height = height;
             
@@ -107,3 +119,23 @@
 })(window.PIVisualization); 
 
 
+            /*
+            How to handle the limit case
+            based on: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+
+              var data = ctx.getImageData(0, 0, 100, 100); 
+  // loop over all columns
+  for (var x = 0; x < data.width; x++) {
+    maxGreen = 0;
+    maxRed = 0;
+    maxBlue = 0;
+    // loop over all the rows in that colum
+
+    for (var y = 0; y < data.height; y++) {
+      maxRed = Math.max(maxRed, data.data[(y * data.width + x) * 4 + 0]);      
+      maxGreen = Math.max(maxGreen, data.data[(y * data.width + x) * 4 + 1]);
+      maxBlue = Math.max(maxBlue, data.data[(y * data.width + x) * 4 + 2]);
+    }
+    ctx.fillStyle  = "".concat('rgba(', maxRed, ",", maxGreen, ",", maxBlue, ",", 1, ')');
+    ctx.fillRect(x, 0, 1, 100);
+    */

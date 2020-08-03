@@ -40,7 +40,7 @@ foreach ($url in $urls) {
     start microsoft-edge:$url
 }#>
 Start-Sleep 1
-Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20108/Various-Multistates
+Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20109/Trend-bar
 $wshell = New-Object -ComObject wscript.shell;
 Start-Sleep 2
 $wshell.SendKeys('{F12}')

@@ -89,6 +89,8 @@
             scope.canvas.height = height;
             scope.ctx.translate(0, scope.canvas.height);
             scope.ctx.scale(width*0.01, -1*height*0.01);
+
+            // debouce
             clearTimeout(scope.redrawit);
             if (scope.latestData)
                 scope.redrawit = setTimeout(draw, 100);
