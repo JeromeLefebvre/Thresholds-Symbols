@@ -33,7 +33,7 @@ foreach ($icon in $icons) {
     Copy-Item $source $target
 }
 
-Start-Process microsoft-edge:https://localhost/pivision/#/Displays/20113/Compare-to-trend
+Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20118/Speed-testing
 $wshell = New-Object -ComObject wscript.shell;
 Start-Sleep 2
 $wshell.SendKeys('{F12}')

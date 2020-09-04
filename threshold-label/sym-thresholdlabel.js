@@ -14,7 +14,7 @@
             return {
                 DataShape: 'Value',
                 Height: 200,
-                Width: 100
+                Width: 200
             };
         },
         StateVariables: ['MultistateColor'],
@@ -32,9 +32,9 @@
         this.onDataUpdate = onDataUpdate;
         this.onResize = onResize;
         this.onConfigChange = onConfigChange;
-        this.lastSymbol = displayProvider.getLastSelectedSymbol().DataSources[0];
 
         function onDataUpdate(newData) {
+            
             if (!newData) {
                 return;
             }
@@ -71,8 +71,9 @@
 
         // Process symbol resize
         function onResize(width, height) {
-            scope.height = height;
-            scope.width = width;
+            var label = elem.find('.threshold-label')[0];    
+            label.setAttribute("style","width:" + width + "px");
+            label.setAttribute("style","height:" + height + "px");
         }
     };  
 	PV.symbolCatalog.register(definition); 

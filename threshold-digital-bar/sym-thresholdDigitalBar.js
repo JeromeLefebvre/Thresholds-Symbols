@@ -24,7 +24,7 @@
         scope.context = scope.canvas.getContext("2d");
         scope.colors = ["white", "orange", "chartreuse", "blue", "cyan", "magenta", "yellow", "black"];
         scope.data = [];
-
+        
         function drawSquares() {
             for (var i = 0; i < scope.data.length - 1; i++) {
             	scope.context.fillStyle = scope.usedColors[Math.round(scope.data[i][1]*(scope.usedColors.length-1)/100)];

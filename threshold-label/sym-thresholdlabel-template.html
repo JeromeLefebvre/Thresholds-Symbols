@@ -1,6 +1,20 @@
+
+<!--<div style="height: 100px;"> 
 <table style="width:100%">
     <tr ng-repeat="color in colors | orderBy:'-'">
         <td ng-style="{'background-color': color.color}"> &nbsp;&nbsp;&nbsp;</td>
         <td>{{ color.text }}</td>
+        <td>!!!!</td>
     </tr>
 </table>
+</div>
+-->
+
+<div style="height: 200px;width: 200px;" class="threshold-label">
+    <table style="width:100%">
+        <tr ng-repeat="color in colors | orderBy:'-'">
+            <td ng-style="{'background-color': color.color}"> &nbsp;&nbsp;&nbsp;</td>
+            <td>{{ color.text }}</td>
+        </tr>
+    </table>
+</div>

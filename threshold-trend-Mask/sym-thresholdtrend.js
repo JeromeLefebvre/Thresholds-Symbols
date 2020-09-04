@@ -24,33 +24,40 @@
         this.onDataUpdate = onDataUpdate;
         this.onResize = onResize;
         this.onConfigChange = onConfigChange;
+        scope.errorColor = "red";
+        const scale = 0.01;
+
+        scope.ctx.strokeStyle = "white";
 
         function drawColors() {
-            scope.ctx.save();
+            //scope.ctx.save();
             scope.ctx.globalCompositeOperation = "source-atop";
-
-            scope.ctx.fillStyle = (scope.errorColor) ? scope.errorColor : "red";
+            scope.ctx.fillStyle = scope.errorColor;
             scope.ctx.fillRect(0, 0, 100, 100);
-            var globaltresholds = scope.latestData.Traces.map(thresholds => thresholds.LineSegments[0].split(" ").map(word => word.split(',')));
 
-            for (var globalIndex = 2; globalIndex < globaltresholds.length; globalIndex++) {
+            for (var globalIndex = 2; globalIndex < scope.globaltresholds.length; globalIndex++) {
                 // draw the polygon by starting from the bottom limit, and the the top
                 scope.ctx.beginPath();
-                scope.ctx.moveTo(globaltresholds[globalIndex-1][0][0], globaltresholds[globalIndex-1][0][1]);
-                globaltresholds[globalIndex - 1].forEach(point => scope.ctx.lineTo(point[0], point[1]));
-                globaltresholds[globalIndex].slice().reverse().forEach(point => scope.ctx.lineTo(point[0], point[1]));
+                var lower = scope.globaltresholds[globalIndex - 1];
+                var upper = scope.globaltresholds[globalIndex];
+                lower.reverse()
+                scope.ctx.moveTo(lower[0][0], lower[0][1]);
+                lower.forEach(point => scope.ctx.lineTo(point[0], point[1]));
+
+                upper.forEach(point => scope.ctx.lineTo(point[0], point[1]));
                 scope.ctx.closePath();
                 scope.ctx.fillStyle = scope.colors[globalIndex-2];                
                 scope.ctx.fill();
               }
-              scope.ctx.restore();
+              upper.reverse();
+              //scope.ctx.restore();
         }
 
         function drawCurve() {
-            var points = scope.latestData.Traces[0].LineSegments[0].split(" ").map(p => p.split(','));
-            scope.ctx.strokeStyle = "white";
-            scope.ctx.lineWidth = 0.1;            
+            var points = scope.globaltresholds[0];
             scope.ctx.beginPath();
+            scope.ctx.globalCompositeOperation = "source-over";
+            scope.ctx.lineWidth = 0.1; 
             scope.ctx.moveTo(points[0][0], points[0][1]);
             points.forEach(point => scope.ctx.lineTo(point[0], point[1]));
             scope.ctx.stroke();
@@ -65,7 +72,7 @@
 
         function onDataUpdate(newData) {
             if (!newData) return;
-            scope.latestData = newData;
+            scope.globaltresholds = newData.Traces.map(thresholds => thresholds.LineSegments[0].split(" ").map(word => word.split(',')));
             draw();
         }
 
@@ -84,22 +91,14 @@
             }   
         }
 
-        function onResize(width, height) {     
-            const scale = 0.01;
-            const pixelRatio = window.devicePixelRatio || 1;       
-            scope.canvas.width = width*pixelRatio;
-            scope.canvas.height = height*pixelRatio;
-
-            scope.canvas.style.width = `${width}px`;
-            scope.canvas.style.height = `${height}px`;
+        function onResize(width, height) {         
+            scope.canvas.width = width;
+            scope.canvas.height = height;
 
             scope.ctx.translate(0, scope.canvas.height);
-            scope.ctx.scale(width*0.01*pixelRatio, -1*height*0.01*pixelRatio);
+            scope.ctx.scale(width*0.01, -1*height*0.01);
 
-            // debouce
-            clearTimeout(scope.redrawit);
-            if (scope.latestData)
-                scope.redrawit = setTimeout(draw, 50);
+            draw();
         }
     };  
 	PV.symbolCatalog.register(definition); 
