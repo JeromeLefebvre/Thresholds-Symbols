@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+  <div class="symbol" hidden> 
+    <canvas id="myCanvas" class="thresholdbar" width="800" height="200"></canvas>
+  </div>  
+<head>
+  <meta charset="utf-8">
+  <!-- Mock required by sym-digital-bar.js -->
+  <script>
+    var PIVisualization = {
+        symbolCatalog: {register: function(definition){symDigitalBar = definition;}},
+        Extensibility: {Enums: {DatasourceBehaviors: {None: 0, Single: 1, Multiple: 2}}},
+        deriveVisualizationFromBase:  function(symbolVis){symbol = symbolVis;}
+    };
+  </script>
+</head>
+<body>
+  <script src="context.js"></script>
+  <script type="text/javascript">
+    %CLIENT_CONFIG%
+    window.__karma__.setupContext(window);
+    %MAPPINGS%
+  </script>
+  %SCRIPTS%
+  <script type="module">
+    window.__karma__.loaded();
+  </script>
+  <script nomodule>
+      window.__karma__.loaded();
+  </script>
+</body>
+</html>
