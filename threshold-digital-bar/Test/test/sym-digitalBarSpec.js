@@ -87,7 +87,7 @@ var configuration = {
         },
         {
           "StateValues": [
-            "Purple!",
+            "Purple",
             false
           ],
           "UpperValue": 7,
@@ -137,7 +137,48 @@ var FlatLine = {
   "SymbolName": "Symbol0"
 }
 
-
+const badData = {
+  "Traces": [
+    {
+      "Value": "Phase3",
+      "ErrorPoints": "35.63,33.33 39.52,66.67 49.97,100 58.39,16.67",
+      "LineSegments": [
+        "0,33.33 3.66,33.33 3.66,50 7.97,50 7.97,66.67 12.27,66.67 12.27,83.33 14.32,83.33 14.32,100 16.78,100 16.78,0 24.77,0 24.77,16.67 27.64,16.67 27.64,33.33 35.63,33.33",
+        "39.52,66.67 43.83,66.67 43.83,83.33 45.67,83.33 45.67,100 49.97,100",
+        "58.39,16.67 61.16,16.67 61.16,33.33 70.26,33.33 70.26,50 74.36,50 74.36,66.67 78.66,66.67 78.66,83.33 80.51,83.33 80.51,100 83.38,100 83.38,0 91.57,0 91.57,16.67 94.65,16.67 94.65,33.33 100,33.33"
+      ]
+    }
+  ],
+  "StartTime": "9/5/2020 4:59:33 AM",
+  "EndTime": "9/5/2020 9:03:33 AM",
+  "ValueScalePositions": [
+    0,
+    16.67,
+    33.33,
+    50,
+    66.67,
+    83.33,
+    100
+  ],
+  "ValueScaleLabels": [
+    "Phase1",
+    "Phase2",
+    "Phase3",
+    "Phase4",
+    "Phase5",
+    "Phase6",
+    "Phase7"
+  ],
+  "ValueScaleLimits": [
+    0,
+    6
+  ],
+  "IsUpdating": false,
+  "SymbolName": "Symbol1",
+  "MSValues": {
+    "MultistateColor": "chartreuse"
+  }
+}
 
 var scope = {
     runtimeData: {labelOptions: {length: 4}},
@@ -159,8 +200,25 @@ describe("sym-DigitalBar", function() {
   it("init: if there is only one value, then the color of the graph should all be one color", function() {
     // create a canvas of a solid color
     symbol.prototype.init(scope, elem);
+    symbol.prototype.onDataUpdate(FlatLine);
     symbol.prototype.onConfigChange(Configuration);
-    console.log(scope.colors);
+
+    const pixels = scope.context.getImageData(0, 0, scope.canvas.width, scope.canvas.height);
+    const data = pixels.data;
+    const red = data[0];
+    const green = data[1];
+    const blue = data[2];
+    const alpha = data[3];
+
+    d = document.createElement("div");
+    d.style.color = "chartreuse";
+    document.body.appendChild(d)
+    //Color in RGB 
+    const style = window.getComputedStyle(d).color;
+    document.body.removeChild(d);
+
+    // https://www.colorhexa.com/7fff00#:~:text=In%20a%20RGB%20color%20space,and%20a%20lightness%20of%2050%25.
+    expect("rgb(" + red + ", " + green + ", " + blue + ")\"", style);
   });
 
   /*

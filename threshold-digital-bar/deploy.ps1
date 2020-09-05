@@ -42,9 +42,9 @@ foreach ($url in $urls) {
 Start-Sleep 1
 Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20117/Digital-Bar
 $wshell = New-Object -ComObject wscript.shell;
-Start-Sleep 2
+Start-Sleep 4
 $wshell.SendKeys('{F12}')
-Start-Sleep 2
+Start-Sleep 3
 $wshell.SendKeys('^p')
 Start-Sleep 3
 $wshell.SendKeys('localhost/PIVision/Scripts/app/editor/symbols/ext/sym-thresholdDigitalBar.js')
