@@ -24,12 +24,10 @@
         scope.context = scope.canvas.getContext("2d");
         scope.colors = ["white", "orange", "chartreuse", "blue", "cyan", "magenta", "yellow", "black"];
         scope.data = [];
-        
-        function drawSquares() {
-            //ErrorPoints: "22.83,20 32.73,60 59.29,100 80.68,0"
+        scope.badData = [];
 
-            // draw the bad data
-            
+        function drawSquares() {
+            // draw the bad data           
             for (var i = 0; 2*i < scope.badData.length; i++) {
                 scope.context.fillStyle = scope.errorStateColor;
                 scope.context.fillRect(scope.badData[2*i], 0, scope.badData[2*i+1] - scope.badData[2*i], 100);
@@ -47,12 +45,6 @@
         
         this.onDataUpdate = function(newData) {
             if (!newData) return;
-            /*
-            0: "0,0 2.52,0 2.52,20 22.83,20"
-                1: "32.73,60 43.66,60 43.66,80 48.35,80 48.35,100 59.29,100"
-                2: "80.68,0 87.71,0 87.71,20 100,20"
-            
-            */
             scope.badData = newData.Traces[0].ErrorPoints ? newData.Traces[0].ErrorPoints.split( " ").map(p => p.split(',')[0]) : [];
 
             scope.data = newData.Traces[0].LineSegments.map(
