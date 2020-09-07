@@ -8,7 +8,7 @@
         visObjectType: symbolVis,
         datasourceBehavior: PV.Extensibility.Enums.DatasourceBehaviors.Single,
         supportsCollections: true,
-        iconUrl: 'scripts/app/editor/symbols/ext/icons/sym-thresholdlabel.png',
+        iconUrl: 'scripts/app/editor/symbols/ext/icons/sym-thresholdDigitalBar.png',
         getDefaultConfig: function () {
             return {
                 DataShape: 'Trend',
@@ -27,6 +27,9 @@
         scope.badData = [];
 
         function drawSquares() {
+            // Clear the past bar, needed if the configuration uses transparent multi-state.
+            scope.context.clearRect(0,0,100,100); 
+
             // draw the bad data           
             for (var i = 0; 2*i < scope.badData.length; i++) {
                 scope.context.fillStyle = scope.errorStateColor;
