@@ -1,0 +1,89 @@
+{
+    "DataShape": "Trend",
+    "Height": 67,
+    "Width": 967,
+    "Top": 253.6,
+    "Left": 37,
+    "Multistates": [
+        {
+            "IsDigitalSet": true,
+            "IsDynamicLimit": false,
+            "StateVariables": [
+                "MultistateColor"
+            ],
+            "ErrorStateValues": [
+                "#ff0000",
+                false
+            ],
+            "DefaultStateValues": [
+                null
+            ],
+            "States": [
+                {
+                    "StateValues": [
+                        "white",
+                        false
+                    ],
+                    "UpperValue": 0,
+                    "Name": "Phase1"
+                },
+                {
+                    "StateValues": [
+                        "#ffa500",
+                        false
+                    ],
+                    "UpperValue": 1,
+                    "Name": "Phase2"
+                },
+                {
+                    "StateValues": [
+                        "chartreuse",
+                        false
+                    ],
+                    "UpperValue": 2,
+                    "Name": "Phase3"
+                },
+                {
+                    "StateValues": [
+                        "hidden:blue",
+                        false
+                    ],
+                    "UpperValue": 3,
+                    "Name": "Phase4"
+                },
+                {
+                    "StateValues": [
+                        "cyan",
+                        false
+                    ],
+                    "UpperValue": 4,
+                    "Name": "Phase5"
+                },
+                {
+                    "StateValues": [
+                        "rgba(255,255,255,0)",
+                        false
+                    ],
+                    "UpperValue": 5,
+                    "Name": "Phase6"
+                },
+                {
+                    "StateValues": [
+                        "yellow",
+                        false
+                    ],
+                    "UpperValue": 6,
+                    "Name": "Phase7"
+                },
+                {
+                    "StateValues": [
+                        "black",
+                        false
+                    ],
+                    "UpperValue": 7,
+                    "Name": "Phase8"
+                }
+            ]
+        }
+    ]
+}

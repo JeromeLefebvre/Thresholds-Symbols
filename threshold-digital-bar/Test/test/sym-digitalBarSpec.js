@@ -2,9 +2,9 @@ var symDigitalBar;
 var symbol;
 var elem;
 var Configuration = {
-    DataShape: 'Trend',
-    Height: 200,
-    Width: 800
+  DataShape: 'Trend',
+  Height: 200,
+  Width: 800
 }
 
 // Test for Ba:Phase.1
@@ -181,62 +181,62 @@ const badData = {
 }
 
 var scope = {
-    runtimeData: {labelOptions: {length: 4}},
-    config: Configuration
+  runtimeData: { labelOptions: { length: 4 } },
+  config: Configuration
 };
 
-describe("sym-DigitalBar", function() {
+describe("sym-DigitalBar", function () {
   elem = document.getElementsByClassName("symbol")[0];
   elem.find = function (className) {
-      return document.getElementsByClassName(className.replace(".", ""));
+    return document.getElementsByClassName(className.replace(".", ""));
   };
-  
-  it("init: verify size configuration", function() {
-      symbol.prototype.init(scope, elem);
-      expect(scope.canvas.width).toEqual(800);
-      expect(scope.canvas.height).toEqual(200);
-  });
 
-  it("init: if there is only one value, then the color of the graph should all be one color", function() {
+  /*
+  it("init: verify size configuration", function () {
+    symbol.prototype.init(scope, elem);
+    symbol.prototype.onResize(1, 1);
+    expect(scope.canvas.width).toEqual(1);
+    expect(scope.canvas.height).toEqual(200);
+  });*/
+
+
+  // verify two canvases 
+  function isMatch(context1, context2) {
+    var image2 = context2.getImageData(0, 0, context1.canvas.width, context1.canvas.width);
+    var data2 = image2.data;
+
+    var image1 = context1.getImageData(0, 0,context2.canvas.width, context2.canvas.width);
+    var data1 = image1.data;
+
+    console.log(data1);
+    console.log(data2);
+    for (var i = 0; i < data1.length; i++) {
+      if (data1[i] != data2[i]) return false;
+    }
+    return true;
+  }
+
+  it("init: if there is only one value, then the color of the graph should all be one color", function () {
     // create a canvas of a solid color
     symbol.prototype.init(scope, elem);
     symbol.prototype.onDataUpdate(FlatLine);
     symbol.prototype.onConfigChange(Configuration);
+    symbol.prototype.onResize(1, 1);
 
-    const pixels = scope.context.getImageData(0, 0, scope.canvas.width, scope.canvas.height);
-    const data = pixels.data;
-    const red = data[0];
-    const green = data[1];
-    const blue = data[2];
-    const alpha = data[3];
+    var testLocation = document.getElementById("testLocation");
+    var canvaselement = document.createElement("canvas");
+    canvaselement.setAttribute('id', "tempCanvas");
+    testLocation.appendChild(canvaselement);
 
-    d = document.createElement("div");
-    d.style.color = "chartreuse";
-    document.body.appendChild(d)
-    //Color in RGB 
-    const style = window.getComputedStyle(d).color;
-    document.body.removeChild(d);
+    context = canvaselement.getContext("2d");
+    context.canvas.width = 1;
+    context.canvas.height = 1;
+    context.fillStyle = "chartreuse";
+    context.fillRect(0, 0, 100, 100);
+    console.log(isMatch(scope.context, context));
 
-    // https://www.colorhexa.com/7fff00#:~:text=In%20a%20RGB%20color%20space,and%20a%20lightness%20of%2050%25.
-    expect("rgb(" + red + ", " + green + ", " + blue + ")\"", style);
+    expect(isMatch(scope.context, context)).toEqual(true);
+
   });
-
-  /*
-Talk to andrew about
-* the order of methods called against a custom symbol, when created and when brought from memory
-* Talk about what is stored in memory
-  */
-  /*
-  var canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 400;
-
-// Get the drawing context
-var ctx = canvas.getContext('2d');
-
-// Then you can do stuff, e.g.:
-ctx.fillStyle = '#f00';
-ctx.fillRect(20,10,80,50);
-*/
 });
 

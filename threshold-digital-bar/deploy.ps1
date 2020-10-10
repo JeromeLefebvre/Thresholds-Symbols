@@ -26,12 +26,13 @@ foreach ($file in $files) {
     Copy-Item $source $target
 }
 
-<#$icons = @("sym-thresholdlabel.png")
+$icons = @("sym-thresholdDigitalBar.svg")
 foreach ($icon in $icons) {
     $source = $PSScriptRoot + "\" + $icon
     $target = $symbolFolder + "\icons"
+
     Copy-Item $source $target
-}#>
+}
 
 <#
 $urls = @("https://localhost/PIVision/#/Displays/AdHoc?dataitems=%5C%5CJLEFEBVRE7390%5CVisy%5CRoll1%7CActual%20GSM&symbol=thresholdtrend", 
@@ -39,14 +40,15 @@ $urls = @("https://localhost/PIVision/#/Displays/AdHoc?dataitems=%5C%5CJLEFEBVRE
 foreach ($url in $urls) {
     start microsoft-edge:$url
 }#>
-Start-Sleep 1
-Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20117/Digital-Bar
+<#
+Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/40127/Phase-6-invisible
 $wshell = New-Object -ComObject wscript.shell;
-Start-Sleep 4
+Start-Sleep 5
 $wshell.SendKeys('{F12}')
-Start-Sleep 3
+Start-Sleep 5
 $wshell.SendKeys('^p')
-Start-Sleep 3
+Start-Sleep 5
 $wshell.SendKeys('localhost/PIVision/Scripts/app/editor/symbols/ext/sym-thresholdDigitalBar.js')
-Start-Sleep 3
+Start-Sleep 5
 $wshell.SendKeys('{ENTER}')
+#>

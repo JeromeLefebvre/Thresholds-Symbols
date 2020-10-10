@@ -1,0 +1,46 @@
+{
+    "Traces": [
+        {
+            "Label": "BA:PHASE.1",
+            "Path": "pi:\\\\JLEFEBVRE7390\\BA:PHASE.1",
+            "Value": "Bad Output",
+            "IsGood": false,
+            "Units": "STATE",
+            "ErrorPoints": "26.73,85.71",
+            "LineSegments": [
+                "0,85.71 26.73,85.71"
+            ]
+        }
+    ],
+    "StartTime": "9/5/2020 6:58:59 AM",
+    "EndTime": "9/5/2020 7:08:24 AM",
+    "ValueScalePositions": [
+        0,
+        14.29,
+        28.57,
+        42.86,
+        57.14,
+        71.43,
+        85.71,
+        100
+    ],
+    "ValueScaleLabels": [
+        "Phase1",
+        "Phase2",
+        "Phase3",
+        "Phase4",
+        "Phase5",
+        "Phase6",
+        "Phase7",
+        "Phase8"
+    ],
+    "ValueScaleLimits": [
+        0,
+        7
+    ],
+    "IsUpdating": false,
+    "SymbolName": "Symbol1",
+    "MSValues": {
+        "MultistateColor": "#ff0000"
+    }
+}
