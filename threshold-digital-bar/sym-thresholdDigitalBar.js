@@ -36,9 +36,11 @@
                 for (var i = 0; i < segment.length - 1; i++) {
                     var index = Math.round(segment[i][1] * (scope.usedColors.length - 1) / 100);
                     scope.context.fillStyle = scope.usedColors[index];
-                    scope.context.fillRect(segment[i][0], 0, segment[i + 1][0] - segment[i][0], 100);
+                    var boxWidth = segment[i + 1][0] - segment[i][0];
+                    boxWidth = Number.isInteger(boxWidth) ? boxWidth + 1: Math.ceil(boxWidth);
+                    scope.context.fillRect(segment[i][0], 0, boxWidth, 100);
                     if (scope.context.fillStyle == "rgba(255, 255, 255, 0)" || scope.usedColors[index].indexOf('hidden') != -1) {
-                        scope.context.clearRect(segment[i][0], 0, segment[i + 1][0] - segment[i][0], 100);
+                        scope.context.clearRect(segment[i][0], 0, boxWidth, 100);
                     }
                 }
             });
@@ -52,8 +54,6 @@
                     p => p.split(',').map(x => parseFloat(x))
                 )
             );
-            console.log(newData.ValueScaleLimits);
-            console.log(scope.config.colors);
             scope.usedColors = newData.ValueScaleLimits ? scope.config.colors.slice(newData.ValueScaleLimits[0], newData.ValueScaleLimits[1] + 1) : scope.config.colors;
             drawSquares();
         }

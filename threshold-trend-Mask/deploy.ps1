@@ -33,6 +33,7 @@ foreach ($icon in $icons) {
     Copy-Item $source $target
 }
 
+<#
 Start-Process microsoft-edge:https://localhost/PIVision/#/Displays/20118/Speed-testing
 $wshell = New-Object -ComObject wscript.shell;
 Start-Sleep 2
@@ -43,3 +44,4 @@ Start-Sleep  1
 $wshell.SendKeys('localhost/PIVision/Scripts/app/editor/symbols/ext/sym-thresholdtrend.js')
 Start-Sleep  2
 $wshell.SendKeys('{ENTER}')
+#>
