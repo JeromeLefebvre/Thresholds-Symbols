@@ -1,14 +1,14 @@
-(function (PV) {
+(function(PV) {
     'use strict';
-    function symbolVis() { }
+
+    function symbolVis() {}
     PV.deriveVisualizationFromBase(symbolVis);
     var definition = {
-        typeName: 'thresholdtrend',
+        typeName: 'profileview',
         visObjectType: symbolVis,
         datasourceBehavior: PV.Extensibility.Enums.DatasourceBehaviors.Multiple,
-        supportsCollections: true,
-        iconUrl: 'scripts/app/editor/symbols/ext/icons/sym-thresholdtrend.png',
-        getDefaultConfig: function () {
+        iconUrl: 'scripts/app/editor/symbols/ext/icons/sym-profileview.png',
+        getDefaultConfig: function() {
             return {
                 DataShape: 'Trend',
                 Height: 300,
@@ -18,9 +18,10 @@
         StateVariables: ['MultistateColor']
     };
 
-    symbolVis.prototype.init = function (scope, elem) {
+    symbolVis.prototype.init = function(scope, elem) {
         scope.canvas = elem.find(".thresholdtrend")[0];
         scope.ctx = scope.canvas.getContext("2d");
+
         this.onDataUpdate = onDataUpdate;
         this.onResize = onResize;
         this.onConfigChange = onConfigChange;
